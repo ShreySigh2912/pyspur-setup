@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  pyspur:
+    image: ghcr.io/pyspur-dev/pyspur:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./data:/app/data
+    networks:
+      - pyspur-network
+
+  # If you want to use Ollama (optional)
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - pyspur-network
+
+networks:
+  pyspur-network:
+    driver: bridge
+
+volumes:
+  ollama_data:
